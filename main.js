@@ -53,24 +53,37 @@
 let inputBx = document.querySelector('#inputBx');
 let list = document.querySelector('#list');
 
+function addItem() {
+    let value = inputBx.value.trim();
+    if (value !== "") {
+        let listItem = document.createElement("li");
+        listItem.innerHTML = `<span>${value}</span><i></i>`;
+
+        listItem.addEventListener("click", function(){
+            this.classList.toggle('done');
+            updateTextDecoration(this);
+        });
+
+        listItem.querySelector("i").addEventListener("click", function(){
+            listItem.remove();
+        });
+
+        list.appendChild(listItem);
+        inputBx.value = "";
+    }
+}
+
+function updateTextDecoration(item) {
+    let textElement = item.querySelector('span');
+    if (item.classList.contains('done')) {
+        textElement.style.textDecoration = 'line-through';
+    } else {
+        textElement.style.textDecoration = 'none';
+    }
+}
+
 inputBx.addEventListener("keyup", function(event){
     if(event.key == "Enter") {
-        addItem(this.value);
-        this.value = "";
+        addItem();
     }
 });
-
-let addItem = (value) => {
-    let listItem = document.createElement("li");
-    listItem.innerHTML = `${value}<i></i>`;
-
-    listItem.addEventListener("click", function(){
-        this.classList.toggle('done');
-    });
-
-    listItem.querySelector("i").addEventListener("click", function(){
-        listItem.remove();
-    });
-
-    list.appendChild(listItem);
-};
